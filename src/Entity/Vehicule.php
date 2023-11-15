@@ -11,10 +11,7 @@ class Vehicule
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column]
+    #[ORM\Column(length: 3)]
     private ?int $id_vehicule = null;
 
     #[ORM\Column(length: 200, nullable: true)]
@@ -38,21 +35,9 @@ class Vehicule
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_enregistrement = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getIdVehicule(): ?int
     {
         return $this->id_vehicule;
-    }
-
-    public function setIdVehicule(int $id_vehicule): static
-    {
-        $this->id_vehicule = $id_vehicule;
-
-        return $this;
     }
 
     public function getTitre(): ?string

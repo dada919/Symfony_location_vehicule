@@ -11,10 +11,7 @@ class Commande
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column]
+    #[ORM\Column(length: 3)]
     private ?int $id_commande = null;
 
     #[ORM\Column]
@@ -35,21 +32,9 @@ class Commande
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_enregistrement = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getIdCommande(): ?int
     {
         return $this->id_commande;
-    }
-
-    public function setIdCommande(int $id_commande): static
-    {
-        $this->id_commande = $id_commande;
-
-        return $this;
     }
 
     public function getIdMembre(): ?int

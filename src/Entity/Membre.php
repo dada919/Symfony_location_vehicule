@@ -11,10 +11,7 @@ class Membre
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column]
+    #[ORM\Column(length: 3)]
     private ?int $id_membre = null;
 
     #[ORM\Column(length: 20)]
@@ -41,21 +38,9 @@ class Membre
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_enregistrement = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
     public function getIdMembre(): ?int
     {
         return $this->id_membre;
-    }
-
-    public function setIdMembre(int $id_membre): static
-    {
-        $this->id_membre = $id_membre;
-
-        return $this;
     }
 
     public function getPseudo(): ?string
