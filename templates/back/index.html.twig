@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block title "Bienvenue sur mon site de location de voitures" %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1 class="text-center">Bienvenue sur notre site de location de voitures</h1>
+        
+        <div class="row mt-4">
+            {% for vehicule in voitures %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <img src="{{ vehicule.photo }}" class="card-img-top" alt="{{ vehicule.titre }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ vehicule.titre }}</h5>
+                            <p class="card-text"><strong>Marque:</strong> {{ vehicule.marque }}</p>
+                            <p class="card-text"><strong>Modèle:</strong> {{ vehicule.modele }}</p>
+                            <p class="card-text">{{ vehicule.description }}</p>
+                            <p class="card-text"><strong>Prix journalier:</strong> {{ vehicule.prixJournalier }}€</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
