@@ -5,9 +5,12 @@ namespace App\Entity;
 use App\Repository\MembreRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: MembreRepository::class)]
-class Membre
+class Membre implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,10 +18,11 @@ class Membre
     private ?int $id_membre = null;
 
     #[ORM\Column(length: 20)]
-    private ?string $pseudo = null;
+    private ?string $username = null;
 
-    #[ORM\Column(length: 60, nullable: true)]
-    private ?string $mdp = null;
+    #[ORM\Column(length: 60)]
+    #[Assert\Length(min: 8, minMessage: "Le mot de passe doit contenir au moins 8 caractères")]
+    private ?string $password = null;
 
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $nom = null;
@@ -27,6 +31,7 @@ class Membre
     private ?string $prenom = null;
 
     #[ORM\Column(length: 50, nullable: true)]
+    #[Assert\Email]
     private ?string $email = null;
 
     #[ORM\Column(nullable: true)]
@@ -36,6 +41,7 @@ class Membre
     private ?int $statut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    #[Assert\DateTime]
     private ?\DateTimeInterface $date_enregistrement = null;
 
     public function getIdMembre(): ?int
@@ -43,28 +49,32 @@ class Membre
         return $this->id_membre;
     }
 
-    public function getPseudo(): ?string
+    public function getUsername(): ?string
     {
-        return $this->pseudo;
+        return $this->username;
     }
 
-    public function setPseudo(string $pseudo): static
+    public function setUsername(string $username): static
     {
-        $this->pseudo = $pseudo;
+        $this->username = $username;
 
         return $this;
     }
 
-    public function MgetMdp(): ?int
+    public function getPassword(): ?string
     {
-        return $this->mdp;
+        return $this->password;
     }
 
-    public function setMdp(?int $mdp): static
+    public function setPassword(?string $password): static
     {
-        $this->mdp = $mdp;
+        $this->password = $password;
 
         return $this;
+    }
+
+    public function eraseCredentials(){
+
     }
 
     public function getNom(): ?string
@@ -137,5 +147,12 @@ class Membre
         $this->date_enregistrement = $date_enregistrement;
 
         return $this;
+    }
+
+    public function getRoles(): array{
+        return [];
+    }
+    public function getUserIdentifier(): string{
+        return "";
     }
 }

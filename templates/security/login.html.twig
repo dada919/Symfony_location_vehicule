@@ -1,15 +1,79 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Log in!{% endblock %}
+
+{% block stylesheets %}
+    {# Inclure les liens vers le fichier CSS Bootstrap #}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .custom-form {
+            background-color: #272727;
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px 0px #000000;
+            margin: 0 auto;
+            max-width: 400px;
+            margin-top: 50px;
+        }
+
+        .custom-form h1 {
+            font-size: 24px;
+            margin-bottom: 30px;
+        }
+
+        .custom-form label {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .custom-form input {
+            font-size: 16px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #444444;
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+        }
+
+        .custom-form input[type="submit"] {
+            background-color: #28a745;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .custom-form a {
+            color: #007bff;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
-    <h2>Connexion</h2>
+    <div class="container">
+        <form method="post" class="form-signin custom-form">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
 
-    {% if error %}
-        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+            {% if app.user %}
+                <div class="mb-3">
+                    You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">Déconnexion</a>
+                </div>
+            {% endif %}
 
-    {{ form_start(form) }}
-    {{ form_widget(form.username) }}
-    {{ form_widget(form.password) }}
-    <button type="submit">Se connecter</button>
-    {{ form_end(form) }}
+            <h1 class="h3 mb-3 font-weight-normal">Formulaire de Connexion</h1>
+            <label for="inputUsername" class="sr-only">Pseudo</label>
+            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control"
+                   placeholder="Pseudo" autocomplete="username" required autofocus>
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Password"
+                   autocomplete="current-password" required>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Se connecter</button>
+        </form>
+    </div>
 {% endblock %}

@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231115101044 extends AbstractMigration
+final class Version20231116110241 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,14 +20,12 @@ final class Version20231115101044 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE commande CHANGE id_commande id_commande INT AUTO_INCREMENT NOT NULL, ADD PRIMARY KEY (id_commande)');
+        $this->addSql('CREATE TABLE membre (id_membre INT AUTO_INCREMENT NOT NULL, username VARCHAR(20) NOT NULL, password VARCHAR(60) NOT NULL, nom VARCHAR(20) DEFAULT NULL, prenom VARCHAR(20) DEFAULT NULL, email VARCHAR(50) DEFAULT NULL, civilite TINYINT(1) DEFAULT NULL, statut INT DEFAULT NULL, date_enregistrement DATETIME DEFAULT NULL, PRIMARY KEY(id_membre)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE commande MODIFY id_commande INT NOT NULL');
-        $this->addSql('DROP INDEX `primary` ON commande');
-        $this->addSql('ALTER TABLE commande CHANGE id_commande id_commande INT NOT NULL');
+        $this->addSql('DROP TABLE membre');
     }
 }

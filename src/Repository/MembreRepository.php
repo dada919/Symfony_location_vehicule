@@ -21,6 +21,33 @@ class MembreRepository extends ServiceEntityRepository
         parent::__construct($registry, Membre::class);
     }
 
+    public function findByEmailOrUsername($login){
+
+        $resultat =  $this->createQueryBuilder('m')
+            ->andWhere('m.pseudo = :val OR m.email = :val')
+            ->setParameter('val', $login)
+            ->getQuery()
+            ->getResult(); 
+
+        /* $resultatEmail =  $this->createQueryBuilder('m')
+            ->andWhere('m.email = :val')
+            ->setParameter('val', $login)
+            ->getQuery()
+            ->getResult(); */
+
+        if(empty($resultat) ){
+            return null ; // identifiants invalides
+        }
+        return $resultat[0]; // {}
+
+       /*  if(!empty($resultatPseudo)){
+            return current($resultatPseudo);
+        }else{
+            return current($resultatEmail);
+        } */
+       
+    }
+
 //    /**
 //     * @return Membre[] Returns an array of Membre objects
 //     */

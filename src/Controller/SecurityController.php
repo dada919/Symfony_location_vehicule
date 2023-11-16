@@ -2,36 +2,65 @@
 
 namespace App\Controller;
 
-use App\Form\LoginFormType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Membre;
+use App\Form\RegisterType;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @Route("/connexion", name="app_login")
-     */
-    public function login(AuthenticationUtils $authenticationUtils, Request $request)
+    #[Route(path: '/login', name: 'app_login')]
+    public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        $membre = new Membre();
-        $membre->setUsername($lastUsername);
-        $form = $this->createForm(LoginFormType::class, $membre);
-
-        return $this->render('security/login.html.twig', [
-            'form'  => $form->createView(),
-            'error' => $error,
-        ]);
+        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
-    /**
-     * @Route("/deconnexion", name="app_logout")
-     */
-    public function logout()
+
+    #[Route(path: '/logout', name: 'app_logout')]
+    public function logout(): void
     {
-        // Cette méthode ne sera jamais exécutée
+
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
+
+    #[Route("/inscription" , name:"app_inscription")]
+    public function inscription(Request $request , ManagerRegistry $doctrine , UserPasswordHasherInterface $hasher) : Response{
+
+        // décrire formulaire 
+        $membre = new Membre();
+        $form =  $this->createForm(RegisterType::class, $membre);
+
+        // remplir les champs du formulaire avec des infos
+        $form->handleRequest($request);
+        //dd($membre);
+
+        if($form->isSubmitted() && $form->isValid()){
+            $em = $doctrine->getManager(); 
+            $passwordHashe = $hasher->hashPassword($membre, $membre->getPassword());
+            $membre->setPassword($passwordHashe);
+            $em->persist($membre);
+            $em->flush();
+            return $this->redirectToRoute("app_login");
+        }
+
+        return $this->render("security/inscription.html.twig" , [
+            // envoie le formulaire à la vue pour qu'il s'affiche
+            "form" => $form->createView()
+        ]);
+        // créer le formulaire
+        // récupérer des valeurs $_POST 
+        // verifier que les valeurs en $_POST sont conformes
+        // si ok => super 
+        // sinon afficher le formulaire avec des messages d'erreur
     }
 }
