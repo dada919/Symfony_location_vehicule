@@ -16,7 +16,7 @@
     <body>
         <header class="bg-dark p-2">
             <nav class="container navbar navbar-expand navbar-dark">
-                <a href="{{ path('home') }}" class="navbar-brand">Location Auto 2000</a>
+                <a href="{{ path('home') }}" class="navbar-brand">Location Auto</a>
                 <ul class="navbar-nav">
                     <li class="navbar-item">
                         <a href="{{ path('home') }}" class="nav-link">Accueil</a>
@@ -24,6 +24,11 @@
                 </ul>
                 
                 <ul class="navbar-nav ms-auto">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="navbar-item">
+                            <a href="{{ path('vehicule_list') }}" class="nav-link">Gestion des Véhicules</a>
+                        </li>
+                    {% endif %}
                     {% if app.user  %}  
                         <li class="navbar-item">
                             <a href="#" class="nav-link">Bienvenue {{ app.user.username }}</a>
@@ -33,7 +38,7 @@
                         </li>
                     {% else %}
                         <li class="navbar-item">
-                            <a href="{{ path('app_inscription') }}" class="nav-link">inscription</a>
+                            <a href="{{ path('app_inscription') }}" class="nav-link">Inscription</a>
                         </li>
                         <li class="navbar-item">
                             <a href="{{ path('app_login') }}" class="nav-link">Connexion</a>
@@ -42,6 +47,7 @@
                 </ul>  
             </nav>
         </header>
-        {% block body %}{% endblock %}
+        {% block body %}
+        {% endblock %}
     </body>
 </html>

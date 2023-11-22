@@ -57,10 +57,5 @@ class SecurityController extends AbstractController
             // envoie le formulaire à la vue pour qu'il s'affiche
             "form" => $form->createView()
         ]);
-        // créer le formulaire
-        // récupérer des valeurs $_POST 
-        // verifier que les valeurs en $_POST sont conformes
-        // si ok => super 
-        // sinon afficher le formulaire avec des messages d'erreur
     }
 }

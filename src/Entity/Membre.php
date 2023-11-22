@@ -34,15 +34,19 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\Email]
     private ?string $email = null;
 
-    #[ORM\Column(nullable: true)]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private ?bool $civilite = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?int $statut = null;
+    #[ORM\Column(nullable: false)]
+    private ?string $statut = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    #[Assert\DateTime]
     private ?\DateTimeInterface $date_enregistrement = null;
+
+public function __construct()
+{
+    $this->setDateEnregistrement(new \DateTimeImmutable());
+}
 
     public function getIdMembre(): ?int
     {
@@ -125,12 +129,12 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getStatut(): ?int
+    public function getStatut(): ?string
     {
         return $this->statut;
     }
 
-    public function setStatut(?int $statut): static
+    public function setStatut(?string $statut): static
     {
         $this->statut = $statut;
 
@@ -142,17 +146,34 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->date_enregistrement;
     }
 
-    public function setDateEnregistrement(?\DateTimeInterface $date_enregistrement): static
+    public function setDateEnregistrement(?\DateTimeInterface $date_enregistrement = null): static
     {
+        if (!$date_enregistrement) {
+            $date_enregistrement = new \DateTime();
+        }
+
         $this->date_enregistrement = $date_enregistrement;
 
         return $this;
     }
 
     public function getRoles(): array{
-        return [];
+        return [$this->statut];
+        return array_unique($roles);
     }
+
+    public function setRoles(array $roles): static
+    {
+        $this->statut = $roles;
+
+        return $this;
+    }
+
+    public function isAdmin() :bool{
+        return in_array("ROLE_ADMIN" , $this->getRoles());
+    }
+
     public function getUserIdentifier(): string{
-        return "";
+        return (string) $this->email;
     }
 }

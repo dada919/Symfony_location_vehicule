@@ -1,11 +1,10 @@
 {% extends "base.html.twig" %}
 
 {% block stylesheets %}
-    {# Inclure les liens vers le fichier CSS Bootstrap #}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <style>
-        .custom-form {
+        .containerForm {
             background-color: #272727;
             color: #ffffff;
             padding: 30px;
@@ -16,17 +15,7 @@
             margin-top: 50px;
         }
 
-        .custom-form h1 {
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-
-        .custom-form label {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        .custom-form input {
+        .FormInput {
             font-size: 16px;
             padding: 10px;
             margin-bottom: 20px;
@@ -36,40 +25,29 @@
             color: #ffffff;
         }
 
-        .custom-form input[type="submit"] {
+        .container input[type="submit"] {
             background-color: #28a745;
             color: #ffffff;
             font-weight: bold;
-        }
-
-        .custom-form a {
-            color: #007bff;
         }
     </style>
 {% endblock %}
 
 {% block body %}
-
-<div class="container">
-    <form method="post" class="form-signin custom-form">
-        <h1 class="h3 mb-3 font-weight-normal">Inscription</h1>
-
+<div class="containerForm">
+    <h1 class="h3 mb-3 font-weight-normal text-center">Inscription</h1>
+    {{ form_start(form)}}
         <div class="text-center">
-            <div>
-                {{ form_row(form.username, {'attr': {'placeholder': 'Pseudo'}}) }}
-            </div>
-            <div>
-                {{ form_row(form.email, {'attr': {'placeholder': 'Email'}}) }}
-            </div>
-            <div>
-                {{ form_row(form.password, {'attr': {'placeholder': 'Password'}}) }}
-            </div>
-        </div>
+                {{ form_row(form.username, {'attr': {'placeholder': 'Pseudo', 'class': 'FormInput w-100'}, 'label': false}) }}
+                {{ form_row(form.email, {'attr': {'placeholder': 'Email', 'class': 'FormInput w-100'}, 'label': false}) }}
+                {{ form_row(form.nom, {'attr': {'placeholder': 'Nom', 'class': 'FormInput w-100'}, 'label': false}) }}
+                {{ form_row(form.prenom, {'attr': {'placeholder': 'Prénom', 'class': 'FormInput w-100'}, 'label': false}) }}
+                {{ form_row(form.civilite, {'attr': {'placeholder': 'Homme', 'class': 'FormInput w-100'}, 'label': false}) }}
+                {{ form_row(form.password, {'attr': {'placeholder': 'Mot de passe', 'class': 'FormInput w-100'}, 'label': false}) }}
 
-        <div class="text-center">
-            <input type="submit" class="btn btn-primary">
+            <input type="submit" class="btn btn-lg btn-primary btn-block">
         </div>
-    </form>
+    {{ form_end(form)}}
 </div>
 
 {% endblock %}

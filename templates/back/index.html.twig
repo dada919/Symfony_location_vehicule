@@ -1,26 +1,63 @@
 {% extends "base.html.twig" %}
 
-{% block title "Bienvenue sur mon site de location de voitures" %}
+{% block stylesheets %}
+<style>
+    .sidebar{
+        position: -webkit-sticky;
+        position: sticky;
+        top : 0;
+        align-self: flex-start;
+    }
+</style>
+{% endblock %}
+
+{% block title "Gestion des véhicules" %}
 
 {% block body %}
+
+    <div class="row">
+        <div class="col-2 sidebar" >
+            {{ include('./back/sidebar.html.twig') }}
+        </div>
+        <div class="col-10">
+            {% block bodyback %}{% endblock %}
+        </div>
+    </div>
+
     <div class="container mt-5">
-        <h1 class="text-center">Bienvenue sur notre site de location de voitures</h1>
+        <h1 class="text-center">Gestion des véhicules</h1>
         
         <div class="row mt-4">
-            {% for vehicule in voitures %}
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="{{ vehicule.photo }}" class="card-img-top" alt="{{ vehicule.titre }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ vehicule.titre }}</h5>
-                            <p class="card-text"><strong>Marque:</strong> {{ vehicule.marque }}</p>
-                            <p class="card-text"><strong>Modèle:</strong> {{ vehicule.modele }}</p>
-                            <p class="card-text">{{ vehicule.description }}</p>
-                            <p class="card-text"><strong>Prix journalier:</strong> {{ vehicule.prixJournalier }}€</p>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+            <table class="table table-striped align-middle">
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Marque</th>
+                        <th>Modèle</th>
+                        <th>Description</th>
+                        <th>photo</th>
+                        <th>Prix journalier</th>
+                        <th>Date d'enregistrement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vehicule in vehicules %}
+                        <tr>
+                            <td>{{ vehicule.titre }}</td>
+                            <td>{{ vehicule.marque }}</td>
+                            <td>{{ vehicule.modele }}</td>
+                            <td>{{ vehicule.description }}</td>
+                            <td><img src="{{ vehicule.photo }}" style="width: 150px; height: auto;" alt="{{ vehicule.titre }}"></td>
+                            <td>{{ vehicule.prixJournalier }}€</td>
+                            <td>{{ vehicule.dateEnregistrement | date("d/m/Y H:i:s") }}</td>
+                            <td>
+                                <a href="{{ path('vehicule_update' , {id : vehicule.idVehicule} )}}" class="btn btn-warning me-3"> Modifier </a>
+                                <a href="{{ path('vehicule_delete' , {id : vehicule.idVehicule}) }}" class="btn btn-danger"> supprimer </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
     </div>
 
