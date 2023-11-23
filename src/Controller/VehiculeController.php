@@ -20,16 +20,12 @@ class VehiculeController extends AbstractController
         $vehicule = new Vehicule();
         dump($vehicule);
         $form = $this->createForm(VehiculeType::class , $vehicule);
-        // et le retourner 
-
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
 
             $em = $doctrine->getManager();
-            // dd($vehicule);
-            $em->persist($vehicule); // va stocker les valeurs du formulaire 
-            // DANS l'entité
+            $em->persist($vehicule);
             $em->flush();
             $this->addFlash("success", "vehicule bien crée");
             return $this->redirectToRoute("home");
@@ -38,7 +34,7 @@ class VehiculeController extends AbstractController
         return $this->render('back/vehicule.html.twig', [
             "form" => $form->createView() ,
             "title" => "créer un vehicule" ,
-            "btn" => "créer"
+            "btn" => "Créer un véhicule"
         ]);
     }
 
@@ -54,35 +50,31 @@ class VehiculeController extends AbstractController
     }
 
     #[Route( "/vehicule/update/{id}", name:"vehicule_update")]
-    public function updatevehicule($id , vehiculeRepository $repo , Request $request, ManagerRegistry $doctrine):Response{
+    public function updatevehicule($id , VehiculeRepository $repo , Request $request, ManagerRegistry $doctrine):Response{
 
-        $vehicule = $repo->find($id); // {id = 1 } => UPDATE
+        $vehicule = $repo->find($id);
         dump($vehicule);
-
-        $form = $this->createForm(vehiculeType::class , $vehicule);
-
+        $form = $this->createForm(VehiculeType::class , $vehicule);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
 
             $em = $doctrine->getManager();
-            // dd($vehicule);
-            $em->persist($vehicule); // va stocker les valeurs du formulaire 
-            // DANS l'entité
+            $em->persist($vehicule);
             $em->flush();
-            $this->addFlash("success", "vehicule bien crée");
-            return $this->redirectToRoute("home");
+            $this->addFlash("success", "vehicule $id a bien été modifié");
+            return $this->redirectToRoute("vehicule_list");
         }
 
-        return $this->render( "back/index.html.twig" , [
+        return $this->render( "back/vehicule.html.twig" , [
             "form" => $form ,
             "title" => "Mettre à jour un vehicule",
-            "btn" => "update"
+            "btn" => "Mettre à jour la fiche du véhicule"
         ] );
     }
 
     #[Route("/vehicule/delete/{id}" , name:"vehicule_delete")]
-    public function deletevehicule($id , vehiculeRepository $repo, ManagerRegistry $doctrine):Response{
+    public function deletevehicule($id , VehiculeRepository $repo, ManagerRegistry $doctrine):Response{
 
         $vehicule = $repo->find($id);
         $em = $doctrine->getManager();

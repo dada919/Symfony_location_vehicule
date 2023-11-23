@@ -43,10 +43,11 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_enregistrement = null;
 
-public function __construct()
-{
-    $this->setDateEnregistrement(new \DateTimeImmutable());
-}
+    public function __construct()
+    {
+        $this->setDateEnregistrement(new \DateTimeImmutable());
+        $this->setStatut('ROLE_USER');
+    }
 
     public function getIdMembre(): ?int
     {
@@ -157,10 +158,10 @@ public function __construct()
         return $this;
     }
 
-    public function getRoles(): array{
-        return [$this->statut];
-        return array_unique($roles);
-    }
+    public function getRoles(): array
+{
+    return array_unique([$this->statut]);
+}
 
     public function setRoles(array $roles): static
     {

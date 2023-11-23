@@ -26,7 +26,7 @@
                 <ul class="navbar-nav ms-auto">
                     {% if is_granted('ROLE_ADMIN') %}
                         <li class="navbar-item">
-                            <a href="{{ path('vehicule_list') }}" class="nav-link">Gestion des Véhicules</a>
+                            <a href="{{ path('vehicule_list') }}" class="nav-link">Gestion du site</a>
                         </li>
                     {% endif %}
                     {% if app.user  %}  

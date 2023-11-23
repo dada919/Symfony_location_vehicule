@@ -117,6 +117,11 @@ class Vehicule
         return $this->date_enregistrement;
     }
 
+    public function __construct()
+    {
+        $this->date_enregistrement = new \DateTime();
+    }
+
     public function setDateEnregistrement(?\DateTimeInterface $date_enregistrement): static
     {
         $this->date_enregistrement = $date_enregistrement;

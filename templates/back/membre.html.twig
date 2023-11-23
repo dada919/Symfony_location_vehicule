@@ -1,0 +1,58 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .containerForm {
+            background-color: #272727;
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px 0px #000000;
+            margin: 0 auto;
+            max-width: 400px;
+            margin-top: 50px;
+        }
+
+        .FormInput {
+            font-size: 16px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #444444;
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+        }
+
+        .container input[type="submit"] {
+            background-color: #28a745;
+            color: #ffffff;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<br/>
+<center>
+<a href="{{ path('membre_list') }}" class="btn btn-secondary">Retour</a>
+</center>
+<div class="containerForm">
+    <h1 class="h3 mb-3 font-weight-normal text-center">Fiche membre</h1>
+    {{ form_start(form)}}
+        <div class="text-center">
+                {{ form_row(form.username, {'attr': {'placeholder': 'Pseudo', 'class': 'FormInput w-100'}, 'label': false}) }}
+                {{ form_row(form.email, {'attr': {'placeholder': 'Email', 'class': 'FormInput w-100'}, 'label': false}) }}
+                {{ form_row(form.nom, {'attr': {'placeholder': 'Nom', 'class': 'FormInput w-100'}, 'label': false}) }}
+                {{ form_row(form.prenom, {'attr': {'placeholder': 'Prénom', 'class': 'FormInput w-100'}, 'label': false}) }}
+                {{ form_row(form.civilite, {'attr': {'placeholder': 'Homme', 'class': 'FormInput w-100'}, 'label': false}) }}
+                {{ form_row(form.statut, {'attr': {'placeholder': 'Utilisateur', 'class': 'FormInput w-100'}, 'label': false}) }}
+                {{ form_row(form.password, {'attr': {'placeholder': 'Mot de passe', 'class': 'FormInput w-100'}, 'label': false}) }}
+
+            <input type="submit" class="btn btn-lg btn-primary btn-block">
+        </div>
+    {{ form_end(form)}}
+</div>
+
+{% endblock %}

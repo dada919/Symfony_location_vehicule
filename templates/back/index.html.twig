@@ -20,44 +20,46 @@
             {{ include('./back/sidebar.html.twig') }}
         </div>
         <div class="col-10">
-            {% block bodyback %}{% endblock %}
-        </div>
-    </div>
 
-    <div class="container mt-5">
-        <h1 class="text-center">Gestion des véhicules</h1>
-        
-        <div class="row mt-4">
-            <table class="table table-striped align-middle">
-                <thead>
-                    <tr>
-                        <th>Nom</th>
-                        <th>Marque</th>
-                        <th>Modèle</th>
-                        <th>Description</th>
-                        <th>photo</th>
-                        <th>Prix journalier</th>
-                        <th>Date d'enregistrement</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for vehicule in vehicules %}
-                        <tr>
-                            <td>{{ vehicule.titre }}</td>
-                            <td>{{ vehicule.marque }}</td>
-                            <td>{{ vehicule.modele }}</td>
-                            <td>{{ vehicule.description }}</td>
-                            <td><img src="{{ vehicule.photo }}" style="width: 150px; height: auto;" alt="{{ vehicule.titre }}"></td>
-                            <td>{{ vehicule.prixJournalier }}€</td>
-                            <td>{{ vehicule.dateEnregistrement | date("d/m/Y H:i:s") }}</td>
-                            <td>
-                                <a href="{{ path('vehicule_update' , {id : vehicule.idVehicule} )}}" class="btn btn-warning me-3"> Modifier </a>
-                                <a href="{{ path('vehicule_delete' , {id : vehicule.idVehicule}) }}" class="btn btn-danger"> supprimer </a>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+            <div class="container mt-5">
+                <h1 class="text-center">Gestion des véhicules</h1>
+
+                <a href="{{ path('vehicule_new') }}" class="btn btn-success">Nouveau Véhicule</a>
+
+                
+                <div class="row mt-4">
+                    <table class="table table-striped align-middle">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Marque</th>
+                                <th>Modèle</th>
+                                <th>Description</th>
+                                <th>photo</th>
+                                <th>Prix journalier</th>
+                                <th>Date d'enregistrement</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for vehicule in vehicules %}
+                                <tr>
+                                    <td>{{ vehicule.titre }}</td>
+                                    <td>{{ vehicule.marque }}</td>
+                                    <td>{{ vehicule.modele }}</td>
+                                    <td>{{ vehicule.description }}</td>
+                                    <td><img src="{{ vehicule.photo }}" style="width: 150px; height: auto;" alt="{{ vehicule.titre }}"></td>
+                                    <td>{{ vehicule.prixJournalier }}€</td>
+                                    <td>{{ vehicule.dateEnregistrement | date("d/m/Y H:i:s") }}</td>
+                                    <td>
+                                        <a href="{{ path('vehicule_update' , {id : vehicule.idVehicule} )}}" class="btn btn-warning me-3"> Modifier </a>
+                                        <a href="{{ path('vehicule_delete' , {id : vehicule.idVehicule}) }}" class="btn btn-danger"> supprimer </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 

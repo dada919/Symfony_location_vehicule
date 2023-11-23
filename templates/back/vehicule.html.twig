@@ -1,33 +1,58 @@
 {% extends 'base.html.twig' %}
 
-{% block title "Ajouter un nouvel article" %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .containerForm {
+            background-color: #272727;
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px 0px #000000;
+            margin: 0 auto;
+            max-width: 400px;
+            margin-top: 50px;
+        }
 
-{% block bodyback %}
+        .FormInput {
+            font-size: 16px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #444444;
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+        }
 
-<h1>{{ title }}</h1>
+        .container input[type="submit"] {
+            background-color: #28a745;
+            color: #ffffff;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
 
-{{ form_start(form) }}
-    <div class="row">
-        <div class="col-6 mb-3">
-            {{ form_row(form.titre , {'label':' titre du véhicule' }) }}
-        </div>
-        <div class="col-6 mb-3">
-            {{ form_row(form.marque) }}
-        </div>
-        <div class="col-4 mb-3">
-            {{ form_label(form.modele, 'Modèle') }}
-        </div>
-        <div class="col-4 mb-3">
-            {{ form_row(form.description , {'label':'description'}) }}
-        </div>
-        <div class="col-4 mb-3">
-            {{ form_row(form.prix_journalier ) }}
-        </div>
-        <div class="mb-3">
-            <input type="submit" class="btn btn-primary btn-lg" value="{{btn}}">
-        </div>
+{% block title "Fiche véhicule" %}
+
+{% block body %}
+<br/>
+<center>
+<a href="{{ path('vehicule_list') }}" class="btn btn-secondary">Retour</a>
+</center>
+<div class="containerForm">
+    <h1 class="text-center">Fiche véhicule</h1>
+    {{ form_start(form) }}
+    <div class="text-center">
+        {{ form_row(form.titre , {'attr': {'placeholder': 'Titre', 'class': 'FormInput w-100'}, 'label': false}) }}
+        {{ form_row(form.marque, {'attr': {'placeholder': 'Marque du véhicule', 'class': 'FormInput w-100'}, 'label': false}) }}
+        {{ form_row(form.modele, {'attr': {'placeholder': 'Modèle du véhicule', 'class': 'FormInput w-100'}, 'label': false}) }}
+        {{ form_row(form.description , {'attr': {'placeholder': 'Description', 'class': 'FormInput w-100'}, 'label': false}) }}
+        {{ form_row(form.photo, {'attr': {'placeholder': 'Lien de la photo du véhicule', 'class': 'FormInput w-100'}, 'label': false}) }}
+        {{ form_row(form.prix_journalier, {'attr': {'placeholder': 'Prix journalier', 'class': 'FormInput w-100'}, 'label': false}) }}
+        <input type="submit" class="btn btn-primary btn-lg" value="{{btn}}">
     </div>
-
-{{ form_end(form) }}<!-- </form> -->
+    {{ form_end(form) }}
+</div>
 
 {% endblock %}
