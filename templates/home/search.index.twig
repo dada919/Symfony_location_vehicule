@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Résultats de recherche{% endblock %}
+
+{% block stylesheets %}
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f4;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    .search-results-banner {
+        background-image: url('2.jpg');
+        background-size: cover;
+        background-position: center;
+        padding: 40px 0;
+        text-align: center;
+        color: white;
+        text-shadow: 1px 1px 2px black;
+        margin-bottom: 30px;
+    }
+
+    .search-results-banner h1 {
+        margin: 0;
+        font-size: 2.5rem;
+    }
+
+    .search-results-banner p {
+        font-size: 1.2rem;
+    }
+
+    .vehicle {
+        display: flex;
+        flex-wrap: wrap;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        margin-bottom: 30px; /* Espace entre les véhicules */
+        margin: 20px 10%;
+    }
+
+    .vehicle img {
+        width: 100%;
+        max-width: 400px;
+        object-fit: cover;
+    }
+
+    .vehicle-details {
+        padding: 20px;
+        flex: 1;
+    }
+
+    .vehicle h3 {
+        color: #007bff; /* Bleu pour le titre */
+        margin-top: 0;
+    }
+
+    .vehicle p {
+        margin: 10px 0;
+    }
+
+    .vehicle-price {
+        font-size: 1.5rem;
+        color: #28a745; /* Vert pour le prix */
+        font-weight: bold;
+    }
+
+    .btn-reserver {
+        padding: 10px 20px;
+        background-color: #17a2b8; /* Bleu clair */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
+    }
+
+    .btn-reserver:hover {
+        background-color: #138496; /* Bleu plus foncé */
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="search-results-banner">
+    <h1>Résultats de recherche</h1>
+    <p>Recherche pour la période du {{ start_date }} au {{ end_date }}.</p>
+</div>
+
+<div class="vehicle-results">
+    {% for vehicle in vehicles %}
+<div class="vehicle">
+    <img src="{{ vehicle.photo }}" alt="Photo de {{ vehicle.titre }}" />
+    <div class="vehicle-details">
+        <h3>{{ vehicle.titre }}</h3>
+        <p><strong>Marque:</strong> {{ vehicle.marque }}</p>
+        <p><strong>Modèle:</strong> {{ vehicle.modele }}</p>
+        <p><strong>Description:</strong> {{ vehicle.description }}</p>
+        <p class="vehicle-price">Prix journalier: {{ vehicle.prixJournalier }} €</p>
+        <a href="{{ path('app_reservation', {
+            'id': vehicle.idVehicule,
+            'start_date': start_date, 
+            'end_date': end_date
+        }) }}" class="btn-reserver">Réserver</a>
+    </div>
+</div>
+{% endfor %}
+</div>
+{% endblock %}

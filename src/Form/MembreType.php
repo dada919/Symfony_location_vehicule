@@ -15,10 +15,7 @@ class MembreType extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('password', PasswordType::class, [
-                'required' => false,
-                'empty_data' => '',
-            ])
+            ->add('password', PasswordType::class, [])
             ->add('username')
             ->add('nom')
             ->add('prenom')

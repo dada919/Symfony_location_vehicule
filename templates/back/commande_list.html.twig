@@ -1,0 +1,60 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+<style>
+    .sidebar{
+        position: -webkit-sticky;
+        position: sticky;
+        top : 0;
+        align-self: flex-start;
+    }
+</style>
+{% endblock %}
+
+{% block title "Gestion des Commandes" %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-2 sidebar" >
+            {{ include('./back/sidebar.html.twig') }}
+        </div>
+        <div class="col-10">
+
+            <div class="container mt-5">
+                <h1 class="text-center">Gestion des Commandes</h1>                
+                <div class="row mt-4">
+                    <table class="table table-striped align-middle">
+                        <thead>
+                            <tr>
+                                <th>Id Commande</th>
+                                <th>Id Membre</th>
+                                <th>Id Véhicule</th>
+                                <th>Prix Total</th>
+                                <th>Date Début</th>
+                                <th>Date Fin</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for commande in commandes %}
+                                <tr>
+                                    <td>{{ commande.idCommande }}</td>
+                                    <td>{{ commande.idMembre }}</td>
+                                    <td>{{ commande.idVehicule }}</td>
+                                    <td>{{ commande.prixTotal }}€</td>
+                                    <td>{{ commande.dateHeureDepart | date("d/m/Y H:i:s") }}</td>
+                                    <td>{{ commande.dateHeureFin | date("d/m/Y H:i:s") }}</td>
+                                    <td>
+                                        <a href="{{ path('commande_update' , {id : commande.idCommande} )}}" class="btn btn-warning me-3"> Modifier </a>
+                                        <a href="{{ path('commande_delete' , {id : commande.idCommande}) }}" class="btn btn-danger"> supprimer </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

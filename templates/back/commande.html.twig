@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .containerForm {
+            background-color: #272727;
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px 0px #000000;
+            margin: 0 auto;
+            max-width: 400px;
+            margin-top: 50px;
+        }
+
+        .FormInput {
+            font-size: 16px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #444444;
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+        }
+
+        .container input[type="submit"] {
+            background-color: #28a745;
+            color: #ffffff;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block title "Fiche commande" %}
+
+{% block body %}
+<br/>
+<center>
+<a href="{{ path('commande_list') }}" class="btn btn-secondary">Retour</a>
+</center>
+<div class="containerForm">
+    <h1 class="text-center">Fiche commande</h1>
+    {{ form_start(form) }}
+    <div class="text-center">
+        {{ form_row(form.id_vehicule , {'attr': {'placeholder': 'id du véhicule', 'class': 'FormInput w-100'}, 'label': false}) }}
+        {{ form_row(form.prix_total, {'attr': {'placeholder': 'Prix total', 'class': 'FormInput w-100'}, 'label': false}) }}
+        {{ form_row(form.date_heure_debut, {'attr': {'class': 'FormInput w-100'}, 'label': 'Date de début'}) }}
+        {{ form_row(form.date_heure_fin, {'attr': {'class': 'FormInput w-100'}, 'label': 'Date de fin'}) }}
+    
+        <input type="submit" class="btn btn-primary btn-lg" value="{{btn}}">
+    </div>
+    {{ form_end(form) }}
+</div>
+
+{% endblock %}

@@ -2,24 +2,106 @@
 
 {% block title "Bienvenue sur mon site de location de voitures" %}
 
-{% block body %}
+{% block stylesheets %}
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa; /* Couleur de fond */
+    }
 
-  <div class="container mt-5">
-    <img src:"https://resources.turo.com/f/253489/768x400/cee1a6ec9c/2309_hp_fr_768x400.jpg"/>
-    <h1 class="text-center">Bienvenue sur notre site de location de voitures</h1>
-    
-    <div class="row mt-4">
+    .hero-section {
+      width: 100%;
+      height: 300px; /* Hauteur de la section d'en-tête */
+      background-image: url('https://resources.turo.com/f/253489/768x400/cee1a6ec9c/2309_hp_fr_768x400.jpg');
+      background-size: cover;
+      background-position: center;
+      text-align: center;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .search-section {
+      background-color: #fff; /* Couleur de fond de la barre de recherche */
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .search-bar form {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .search-bar input[type="date"] {
+      width: 45%;
+      padding: 10px;
+      margin-right: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    .search-bar button {
+      background-color: #007bff; /* Couleur du bouton de recherche */
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+
+    .card {
+      width: 30%;
+      margin-bottom: 20px;
+      padding: 0px;
+    }
+
+    @media (max-width: 768px) {
+      .card {
+        width: 100%;
+      }
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class="hero-section">
+    <h1>Bienvenue sur notre site de location de voitures</h1>
+  </div>
+
+  <div class="container">
+    <div class="search-section">
+      <div class="search-bar">
+        <form action="{{ path('app_search') }}" method="get">
+          <input type="date" id="DATE_DEBUT" name="start_date" value="{{ start_date|default('2023-01-01') }}" required>
+          <input type="date" id="DATE_FIN" name="end_date" value="{{ end_date|default('2023-01-10') }}" required>
+          <button type="submit" class="btn btn-primary mt-2">Rechercher</button>
+        </form>    
+      </div>
+    </div>
+
+    <div class="row">
       {% for vehicule in voitures %}
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            <img src="{{ vehicule.photo }}" class="card-img-top" alt="{{ vehicule.titre }}">
-            <div class="card-body">
-              <h5 class="card-title">{{ vehicule.titre }}</h5>
-              <p class="card-text"><strong>Marque:</strong> {{ vehicule.marque }}</p>
-              <p class="card-text"><strong>Modèle:</strong> {{ vehicule.modele }}</p>
-              <p class="card-text">{{ vehicule.description }}</p>
-              <p class="card-text"><strong>Prix journalier:</strong> {{ vehicule.prixJournalier }}€</p>
-            </div>
+        <div class="card">
+          <img src="{{ vehicule.photo }}" style="width: 100%; height: auto;" alt="{{ vehicule.titre }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ vehicule.titre }}</h5>
+            <p class="card-text"><strong>Marque:</strong> {{ vehicule.marque }}</p>
+            <p class="card-text"><strong>Modèle:</strong> {{ vehicule.modele }}</p>
+            <p class="card-text">{{ vehicule.description }}</p>
+            <p class="card-text"><strong>Prix journalier:</strong> {{ vehicule.prixJournalier }}€</p>
+            <a href="{{ path('confirm_reservation', {'id': vehicule.idVehicule, 'start_date': start_date, 'end_date': end_date}) }}" class="btn btn-success mt-2">Réserver</a>
           </div>
         </div>
       {% endfor %}

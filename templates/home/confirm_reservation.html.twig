@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container mt-5">
+        <center>
+            <h2 class="mb-4">Confirmation de réservation</h2>
+            
+            <form method="post" action="{{ path('confirm_reservation', {'id': vehicule.idVehicule}) }}">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img src="{{ vehicule.photo }}" style="width: 100%; height: auto;" alt="{{ vehicule.titre }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ vehicule.titre }}</h5>
+                                <p class="card-text"><strong>Marque:</strong> {{ vehicule.marque }}</p>
+                                <p class="card-text"><strong>Modèle:</strong> {{ vehicule.modele }}</p>
+                                <p class="card-text">{{ vehicule.description }}</p>
+                                <p class="card-text"><strong>Prix journalier:</strong> {{ vehicule.prixJournalier }}€</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 mt-4">
+                        <p class="mb-2"><strong>Date de début :</strong> {{ start_date }}</p>
+                        <p class="mb-2"><strong>Date de fin :</strong> {{ end_date }}</p>
+                        
+                        {% set startDateObj = start_date|date('Y-m-d')|date_modify('midnight') %}
+                        {% set endDateObj = end_date|date('Y-m-d')|date_modify('midnight') %}
+                        {% set numberOfDays = endDateObj.diff(startDateObj).days %}
+                        {% set totalCost = numberOfDays * vehicule.prixJournalier %}
+                        
+                        <p class="mb-2"><strong>Nombre de jours :</strong> {{ numberOfDays }}</p>
+                        <p class="mb-2"><strong>Coût total :</strong> {{ totalCost }}€</p>
+                        
+                        <input type="hidden" name="start_date_form" value="{{ start_date }}">
+                        <input type="hidden" name="end_date_form" value="{{ end_date }}">
+                        <input type="hidden" name="total_cost_form" value="{{ totalCost }}">
+                        <input type="hidden" name="idVehicule" value="{{ vehicule.idVehicule }}">
+
+                        <button type="submit" class="btn btn-success mt-3">Réserver</button>
+                    </div>
+                </div>
+            </form>
+        </center>
+    </div>
+{% endblock %}
