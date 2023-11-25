@@ -101,7 +101,6 @@
             <p class="card-text"><strong>Modèle:</strong> {{ vehicule.modele }}</p>
             <p class="card-text">{{ vehicule.description }}</p>
             <p class="card-text"><strong>Prix journalier:</strong> {{ vehicule.prixJournalier }}€</p>
-            <a href="{{ path('confirm_reservation', {'id': vehicule.idVehicule, 'start_date': start_date, 'end_date': end_date}) }}" class="btn btn-success mt-2">Réserver</a>
           </div>
         </div>
       {% endfor %}

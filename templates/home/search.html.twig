@@ -102,7 +102,7 @@
         <p><strong>Modèle:</strong> {{ vehicle.modele }}</p>
         <p><strong>Description:</strong> {{ vehicle.description }}</p>
         <p class="vehicle-price">Prix journalier: {{ vehicle.prixJournalier }} €</p>
-        <a href="{{ path('app_reservation', {
+        <a href="{{ path('confirm_reservation', {
             'id': vehicle.idVehicule,
             'start_date': start_date, 
             'end_date': end_date

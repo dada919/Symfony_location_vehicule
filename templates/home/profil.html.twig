@@ -1,0 +1,94 @@
+{% extends "base.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        .containerForm {
+            background-color: #272727;
+            color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px 0px #000000;
+            margin-top: 50px;
+        }
+
+        .FormInput {
+            font-size: 16px;
+            padding: 10px;
+            margin-bottom: 20px;
+            background-color: #444444;
+            border: none;
+            border-radius: 8px;
+            color: #ffffff;
+        }
+
+        .container input[type="submit"] {
+            background-color: #28a745;
+            color: #ffffff;
+            font-weight: bold;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <h1 class="text-center">Gestion de votre profil</h1>
+        <div class="col-md-6">
+            {% if app.user  %}
+                <div class="containerForm">
+                    <h1 class="h3 mb-3 font-weight-normal text-center">Modifier vos informations de compte</h1>
+                    {{ form_start(form)}}
+                        <div class="text-center">
+                            {{ form_row(form.username, {'attr': {'placeholder': 'Pseudo', 'class': 'FormInput w-100'} }) }}
+                            {{ form_row(form.email, {'attr': {'placeholder': 'Email', 'class': 'FormInput w-100'} }) }}
+                            {{ form_row(form.nom, {'attr': {'placeholder': 'Nom', 'class': 'FormInput w-100'} }) }}
+                            {{ form_row(form.prenom, {'attr': {'placeholder': 'Prénom', 'class': 'FormInput w-100'} }) }}
+                            {{ form_row(form.civilite, {'attr': {'placeholder': 'Homme', 'class': 'FormInput w-100'} }) }}
+                            {{ form_row(form.password, {'attr': {'placeholder': 'Mot de passe', 'class': 'FormInput w-100'} }) }}
+                            <input type="submit" class="btn btn-lg btn-primary btn-block">
+                        </div>
+                    {{ form_end(form)}}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="container mt-5">
+                    <h1 class="text-center">Mes Commandes</h1>                
+                    <div class="row mt-4">
+                        <table class="table table-striped align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Numéro de commande</th>
+                                    <th>Numéro du véhicule</th>
+                                    <th>Prix Total</th>
+                                    <th>Date Début</th>
+                                    <th>Date Fin</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for commande in commandes %}
+                                    <tr>
+                                        <td>{{ commande.idCommande }}</td>
+                                        <td>{{ commande.idVehicule }}</td>
+                                        <td>{{ commande.prixTotal }}€</td>
+                                        <td>{{ commande.dateHeureDepart | date("d/m/Y H:i:s") }}</td>
+                                        <td>{{ commande.dateHeureFin | date("d/m/Y H:i:s") }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% else  %}
+                <h1 class="h3 mb-3 font-weight-normal text-center">Vous n'êtes pas connecté</h1>
+                <center>
+                    <a href="{{ path('vehicule_list') }}" class="btn btn-primary">Se Connecter</a>
+                </center>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

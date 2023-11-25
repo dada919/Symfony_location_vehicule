@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommandeController extends AbstractController
 {
     #[Route("/commande/list" , name:"commande_list")]
-    public function listecommandes(commandeRepository $repo) :Response{
+    public function listecommandes(CommandeRepository $repo) :Response{
 
         $commandes = $repo->findAll();
 

@@ -3,14 +3,19 @@
 namespace App\Controller;
 
 use App\Repository\VehiculeRepository;
+use App\Repository\MembreRepository;
+use App\Repository\CommandeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Vehicule;
 use App\Entity\Commande;
+use App\Form\ProfilType;
 use Symfony\Component\Security\Core\Security;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class HomeController extends AbstractController
 {
@@ -30,18 +35,30 @@ class HomeController extends AbstractController
     }
 
     #[Route('/search', name: 'app_search')]
-    public function search(Request $request, VehiculeRepository $vehiculeRepository): Response
-    {
-        $startDate = new \DateTime($request->query->get('start_date'));
-        $endDate = new \DateTime($request->query->get('end_date'));
-        $availableVehicles = $vehiculeRepository->findAvailableVehicles($startDate, $endDate);
+public function search(Request $request, EntityManagerInterface $entityManager): Response
+{
+    $startDate = new \DateTime($request->query->get('start_date'));
+    $endDate = new \DateTime($request->query->get('end_date'));
 
-        return $this->render('search/index.html.twig', [
-            'start_date' => $startDate->format('Y-m-d'),
-            'end_date' => $endDate->format('Y-m-d'),
-            'vehicles' => $availableVehicles,
-        ]);
-    }
+    $dql = "SELECT id_vehicule FROM App\Entity\Vehicule id_vehicule 
+            WHERE NOT EXISTS 
+                (SELECT commande.id_commande FROM App\Entity\Commande commande 
+                 WHERE commande.id_vehicule = id_vehicule AND 
+                       ((commande.date_heure_depart BETWEEN :start_date AND :end_date) OR 
+                        (commande.date_heure_fin BETWEEN :start_date AND :end_date)))";
+
+    $query = $entityManager->createQuery($dql);
+    $query->setParameter('start_date', $startDate);
+    $query->setParameter('end_date', $endDate);
+
+    $vehiculesDispo = $query->getResult();
+
+    return $this->render('home/search.html.twig', [
+        'start_date' => $startDate->format('Y-m-d'),
+        'end_date' => $endDate->format('Y-m-d'),
+        'vehicles' => $vehiculesDispo,
+    ]);
+}
 
     #[Route('/confirm_reservation/{id}', name: 'confirm_reservation')]
     public function confirmReservation(Vehicule $vehicule, Request $request, VehiculeRepository $repo, ManagerRegistry $doctrine, Security $security): Response
@@ -83,6 +100,43 @@ class HomeController extends AbstractController
             'start_date' => $startDate->format('Y-m-d'),
             'end_date' => $endDate->format('Y-m-d'),
         ]);
+    }
+
+    #[Route( "/membre", name:"membre")]
+    public function membre(MembreRepository $repo , Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher, CommandeRepository $commandeRepository):Response{
+        $user = $this->getUser();
+        $id = $user->getIdMembre();
+        $membre = $repo->find($id);
+        dump($membre);
+    
+        $originalPassword = $membre->getPassword();
+
+        $commandes = $commandeRepository->findBy(['id_membre' => $id]);
+    
+        $form = $this->createForm(ProfilType::class , $membre);
+        $form->handleRequest($request);
+    
+        if($form->isSubmitted() && $form->isValid()){
+    
+            $em = $doctrine->getManager();
+    
+            if ($membre->getPassword() !== $originalPassword) {
+                $passwordHashe = $hasher->hashPassword($membre, $membre->getPassword());
+                $membre->setPassword($passwordHashe);
+            }
+    
+            $em->persist($membre);
+            $em->flush();
+            $this->addFlash("success", "membre $id a bien été modifié");
+            return $this->redirectToRoute("membre");
+        }
+    
+        return $this->render( "home/profil.html.twig" , [
+            "commandes" => $commandes,
+            "form" => $form ,
+            "title" => "Gestion profil",
+            "btn" => "Mettre à jour vos information"
+        ] );
     }
 
 }

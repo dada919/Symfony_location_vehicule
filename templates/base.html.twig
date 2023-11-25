@@ -31,7 +31,7 @@
                     {% endif %}
                     {% if app.user  %}  
                         <li class="navbar-item">
-                            <a href="#" class="nav-link">Bienvenue {{ app.user.username }}</a>
+                            <a href="{{ path('membre') }}" class="nav-link">Bienvenue {{ app.user.username }}</a>
                         </li>
                         <li class="navbar-item">
                             <a href="{{ path('app_logout') }}" class="nav-link">Déconnexion</a>

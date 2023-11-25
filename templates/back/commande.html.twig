@@ -44,9 +44,9 @@
     <h1 class="text-center">Fiche commande</h1>
     {{ form_start(form) }}
     <div class="text-center">
-        {{ form_row(form.id_vehicule , {'attr': {'placeholder': 'id du véhicule', 'class': 'FormInput w-100'}, 'label': false}) }}
-        {{ form_row(form.prix_total, {'attr': {'placeholder': 'Prix total', 'class': 'FormInput w-100'}, 'label': false}) }}
-        {{ form_row(form.date_heure_debut, {'attr': {'class': 'FormInput w-100'}, 'label': 'Date de début'}) }}
+        {{ form_row(form.id_vehicule , {'attr': {'placeholder': 'id du véhicule', 'class': 'FormInput w-100'} }) }}
+        {{ form_row(form.prix_total, {'attr': {'placeholder': 'Prix total', 'class': 'FormInput w-100'} }) }}
+        {{ form_row(form.date_heure_depart, {'attr': {'class': 'FormInput w-100'}, 'label': 'Date de début'}) }}
         {{ form_row(form.date_heure_fin, {'attr': {'class': 'FormInput w-100'}, 'label': 'Date de fin'}) }}
     
         <input type="submit" class="btn btn-primary btn-lg" value="{{btn}}">

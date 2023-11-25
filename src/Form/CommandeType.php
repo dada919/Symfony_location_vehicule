@@ -7,7 +7,7 @@ use App\Repository\CommandeRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\DateType; // Ajoutez cette ligne
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
 class CommandeType extends AbstractType
 {
@@ -23,12 +23,12 @@ class CommandeType extends AbstractType
         $builder
             ->add('id_vehicule')
             ->add('prix_total')
-            ->add('date_heure_depart', DateType::class, [ // Utilisez DateType::class ici
+            ->add('date_heure_depart', DateTimeType::class, [
                 'label' => 'Date de début',
                 'widget' => 'single_text',
             ])
-            ->add('date_heure_fin', DateType::class, [ // Utilisez DateType::class ici
-                'label' => 'Date de fin', // Modifié pour "Date de fin"
+            ->add('date_heure_fin', DateTimeType::class, [
+                'label' => 'Date de fin',
                 'widget' => 'single_text',
             ])
         ;
