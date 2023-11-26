@@ -1,18 +1,18 @@
 {% extends "base.html.twig" %}
 
-{% block title "Bienvenue sur mon site de location de voitures" %}
+{% block title "Bienvenue sur notre site de location de voitures" %}
 
 {% block stylesheets %}
   <style>
     body {
       margin: 0;
       padding: 0;
-      background-color: #f8f9fa; /* Couleur de fond */
+      background-color: #f8f9fa;
     }
 
     .hero-section {
       width: 100%;
-      height: 300px; /* Hauteur de la section d'en-tête */
+      height: 300px;
       background-image: url('https://resources.turo.com/f/253489/768x400/cee1a6ec9c/2309_hp_fr_768x400.jpg');
       background-size: cover;
       background-position: center;
@@ -25,11 +25,14 @@
     }
 
     .search-section {
-      background-color: #fff; /* Couleur de fond de la barre de recherche */
+      background-color: #fff;
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      margin-top: -100px;
       margin-bottom: 20px;
+      margin-left: 200px;
+      margin-right: 200px;
     }
 
     .search-bar form {
@@ -38,7 +41,7 @@
       align-items: center;
     }
 
-    .search-bar input[type="date"] {
+    .search-bar input[type="datetime-local"] {
       width: 45%;
       padding: 10px;
       margin-right: 10px;
@@ -47,12 +50,13 @@
     }
 
     .search-bar button {
-      background-color: #007bff; /* Couleur du bouton de recherche */
+      background-color: #007bff;
       color: #fff;
       border: none;
       padding: 10px 20px;
       border-radius: 4px;
       cursor: pointer;
+      margin-top: 0px !important;
     }
 
     .row {
@@ -84,24 +88,19 @@
     <div class="search-section">
       <div class="search-bar">
         <form action="{{ path('app_search') }}" method="get">
-          <input type="date" id="DATE_DEBUT" name="start_date" value="{{ start_date|default('2023-01-01') }}" required>
-          <input type="date" id="DATE_FIN" name="end_date" value="{{ end_date|default('2023-01-10') }}" required>
+          <input type="datetime-local" id="DATE_DEBUT" name="start_date" value="{{ start_date|default("now"|date('d/m/Y H:i')) }}" min="{{ "now"|date('d/m/Y H:i:s') }}" required>
+          <input type="datetime-local" id="DATE_FIN" name="end_date" value="{{ end_date|default("now"|date('d/m/Y H:i')) }}" required>
           <button type="submit" class="btn btn-primary mt-2">Rechercher</button>
         </form>    
       </div>
     </div>
 
+    <h1 class="text-center">Nos véhicules de location</h1>
+
     <div class="row">
       {% for vehicule in voitures %}
         <div class="card">
-          <img src="{{ vehicule.photo }}" style="width: 100%; height: auto;" alt="{{ vehicule.titre }}">
-          <div class="card-body">
-            <h5 class="card-title">{{ vehicule.titre }}</h5>
-            <p class="card-text"><strong>Marque:</strong> {{ vehicule.marque }}</p>
-            <p class="card-text"><strong>Modèle:</strong> {{ vehicule.modele }}</p>
-            <p class="card-text">{{ vehicule.description }}</p>
-            <p class="card-text"><strong>Prix journalier:</strong> {{ vehicule.prixJournalier }}€</p>
-          </div>
+          <img src="{{ vehicule.photo }}" style="width: 100%;" alt="{{ vehicule.titre }}">
         </div>
       {% endfor %}
     </div>

@@ -24,11 +24,11 @@ class CommandeType extends AbstractType
             ->add('id_vehicule')
             ->add('prix_total')
             ->add('date_heure_depart', DateTimeType::class, [
-                'label' => 'Date de début',
+                'label' => 'Date et heure de début',
                 'widget' => 'single_text',
             ])
             ->add('date_heure_fin', DateTimeType::class, [
-                'label' => 'Date de fin',
+                'label' => 'Date et heure de fin',
                 'widget' => 'single_text',
             ])
         ;

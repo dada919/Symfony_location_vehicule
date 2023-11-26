@@ -20,45 +20,42 @@ use Doctrine\ORM\EntityManagerInterface;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, VehiculeRepository $repo): Response
+    public function index(VehiculeRepository $repo): Response
     {
         $voitures = $repo->findAll();
 
-        $startDate = $request->query->get('start_date');
-        $endDate = $request->query->get('end_date');
-
         return $this->render("home/index.html.twig", [
             "voitures" => $voitures,
-            "start_date" => $startDate,
-            "end_date" => $endDate,
         ]);
     }
 
     #[Route('/search', name: 'app_search')]
-public function search(Request $request, EntityManagerInterface $entityManager): Response
-{
-    $startDate = new \DateTime($request->query->get('start_date'));
-    $endDate = new \DateTime($request->query->get('end_date'));
+    public function search(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $startDate = new \DateTime($request->query->get('start_date'));
+        $endDate = new \DateTime($request->query->get('end_date'));
 
-    $dql = "SELECT id_vehicule FROM App\Entity\Vehicule id_vehicule 
-            WHERE NOT EXISTS 
-                (SELECT commande.id_commande FROM App\Entity\Commande commande 
-                 WHERE commande.id_vehicule = id_vehicule AND 
-                       ((commande.date_heure_depart BETWEEN :start_date AND :end_date) OR 
-                        (commande.date_heure_fin BETWEEN :start_date AND :end_date)))";
+        $dql = "SELECT v
+        FROM App\Entity\Vehicule v
+        WHERE NOT EXISTS 
+            (SELECT c.id_commande 
+            FROM App\Entity\Commande c
+            WHERE c.id_vehicule = v AND 
+                ((c.date_heure_depart BETWEEN :start_date AND :end_date) OR 
+                    (c.date_heure_fin BETWEEN :start_date AND :end_date)))";
 
-    $query = $entityManager->createQuery($dql);
-    $query->setParameter('start_date', $startDate);
-    $query->setParameter('end_date', $endDate);
+        $query = $entityManager->createQuery($dql);
+        $query->setParameter('start_date', $startDate);
+        $query->setParameter('end_date', $endDate);
 
-    $vehiculesDispo = $query->getResult();
+        $vehiculesDispo = $query->getResult();
 
-    return $this->render('home/search.html.twig', [
-        'start_date' => $startDate->format('Y-m-d'),
-        'end_date' => $endDate->format('Y-m-d'),
-        'vehicles' => $vehiculesDispo,
-    ]);
-}
+        return $this->render('home/search.html.twig', [
+            'start_date' => $startDate->format('d-m-Y H:i:s'),
+            'end_date' => $endDate->format('d-m-Y H:i:s'),
+            'vehicles' => $vehiculesDispo,
+        ]);
+    }
 
     #[Route('/confirm_reservation/{id}', name: 'confirm_reservation')]
     public function confirmReservation(Vehicule $vehicule, Request $request, VehiculeRepository $repo, ManagerRegistry $doctrine, Security $security): Response
@@ -97,13 +94,13 @@ public function search(Request $request, EntityManagerInterface $entityManager):
 
         return $this->render('home/confirm_reservation.html.twig', [
             'vehicule' => $vehicule,
-            'start_date' => $startDate->format('Y-m-d'),
-            'end_date' => $endDate->format('Y-m-d'),
+            'start_date' => $startDate->format('Y-m-d H:i:s'),
+            'end_date' => $endDate->format('Y-m-d H:i:s'),
         ]);
     }
 
     #[Route( "/membre", name:"membre")]
-    public function membre(MembreRepository $repo , Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher, CommandeRepository $commandeRepository):Response{
+    public function membre(MembreRepository $repo, VehiculeRepository $vehiculeRepo, Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $hasher, CommandeRepository $commandeRepository):Response{
         $user = $this->getUser();
         $id = $user->getIdMembre();
         $membre = $repo->find($id);
@@ -112,6 +109,7 @@ public function search(Request $request, EntityManagerInterface $entityManager):
         $originalPassword = $membre->getPassword();
 
         $commandes = $commandeRepository->findBy(['id_membre' => $id]);
+        $vehicules = $vehiculeRepo->findAll();
     
         $form = $this->createForm(ProfilType::class , $membre);
         $form->handleRequest($request);
@@ -133,6 +131,7 @@ public function search(Request $request, EntityManagerInterface $entityManager):
     
         return $this->render( "home/profil.html.twig" , [
             "commandes" => $commandes,
+            "vehicules" => $vehicules,
             "form" => $form ,
             "title" => "Gestion profil",
             "btn" => "Mettre à jour vos information"

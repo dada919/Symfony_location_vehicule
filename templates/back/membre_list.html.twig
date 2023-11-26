@@ -61,7 +61,7 @@
                                             Utilisteur
                                         {% endif %}
                                     </td>
-                                    <td>{{ membre.dateEnregistrement | date("d/m/Y H:i:s") }}</td>
+                                    <td>{{ membre.dateEnregistrement | date("d/m/Y H:i") }}</td>
                                     <td>
                                         <a href="{{ path('membre_update' , {id : membre.idMembre} )}}" class="btn btn-warning me-3"> Modifier </a>
                                         <a href="{{ path('membre_delete' , {id : membre.idMembre}) }}" class="btn btn-danger"> supprimer </a>

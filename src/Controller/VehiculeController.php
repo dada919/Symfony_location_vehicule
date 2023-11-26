@@ -28,7 +28,7 @@ class VehiculeController extends AbstractController
             $em->persist($vehicule);
             $em->flush();
             $this->addFlash("success", "vehicule bien crée");
-            return $this->redirectToRoute("home");
+            return $this->redirectToRoute("vehicule_list");
         }
 
         return $this->render('back/vehicule.html.twig', [

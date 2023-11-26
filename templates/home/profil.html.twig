@@ -61,20 +61,21 @@
                             <thead>
                                 <tr>
                                     <th>Numéro de commande</th>
-                                    <th>Numéro du véhicule</th>
-                                    <th>Prix Total</th>
-                                    <th>Date Début</th>
-                                    <th>Date Fin</th>
+                                    <th>Véhicule</th>
+                                    <th>Prix total</th>
+                                    <th>Date et heure de début</th>
+                                    <th>Date et heure de fin</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {% for commande in commandes %}
                                     <tr>
                                         <td>{{ commande.idCommande }}</td>
-                                        <td>{{ commande.idVehicule }}</td>
+                                        {% set vehiculeAssocie = vehicules|filter(v => v.idVehicule == commande.idVehicule)|first %}
+                                        <td>{{ vehiculeAssocie.titre }}</td>
                                         <td>{{ commande.prixTotal }}€</td>
-                                        <td>{{ commande.dateHeureDepart | date("d/m/Y H:i:s") }}</td>
-                                        <td>{{ commande.dateHeureFin | date("d/m/Y H:i:s") }}</td>
+                                        <td>{{ commande.dateHeureDepart | date("d/m/Y H:i") }}</td>
+                                        <td>{{ commande.dateHeureFin | date("d/m/Y H:i") }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>

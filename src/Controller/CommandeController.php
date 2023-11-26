@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Commande;
 use App\Form\CommandeType;
 use App\Repository\CommandeRepository;
+use App\Repository\MembreRepository;
+use App\Repository\VehiculeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,12 +16,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommandeController extends AbstractController
 {
     #[Route("/commande/list" , name:"commande_list")]
-    public function listecommandes(CommandeRepository $repo) :Response{
+    public function listecommandes(CommandeRepository $repo, MembreRepository $membreRepo, VehiculeRepository $vehiculeRepo) :Response{
 
         $commandes = $repo->findAll();
+        $membres = $membreRepo->findAll();
+        $vehicules = $vehiculeRepo->findAll();
 
         return $this->render( "back/commande_list.html.twig" , [
-            "commandes" => $commandes 
+            "commandes" => $commandes, 
+            "membres" => $membres,
+            "vehicules" => $vehicules,
         ] );
 
     }

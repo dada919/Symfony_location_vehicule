@@ -32,7 +32,7 @@ class Vehicule
     #[ORM\Column(nullable: true)]
     private ?int $prix_journalier = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $date_enregistrement = null;
 
     public function getIdVehicule(): ?int

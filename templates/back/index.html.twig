@@ -49,7 +49,7 @@
                                     <td>{{ vehicule.description }}</td>
                                     <td><img src="{{ vehicule.photo }}" style="width: 150px; height: auto;" alt="{{ vehicule.titre }}"></td>
                                     <td>{{ vehicule.prixJournalier }}€</td>
-                                    <td>{{ vehicule.dateEnregistrement | date("d/m/Y H:i:s") }}</td>
+                                    <td>{{ vehicule.dateEnregistrement | date("d/m/Y H:i") }}</td>
                                     <td>
                                         <a href="{{ path('vehicule_update' , {id : vehicule.idVehicule} )}}" class="btn btn-warning me-3"> Modifier </a>
                                         <a href="{{ path('vehicule_delete' , {id : vehicule.idVehicule}) }}" class="btn btn-danger"> supprimer </a>
